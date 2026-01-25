@@ -11,7 +11,8 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - http:
+   - host: ace12.online
+      http:
         paths:
           - path: /api
             pathType: Prefix
