@@ -7,13 +7,15 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    # alb.ingress.kubernetes.io/subnets: "subnet-0aa439b4ddafcca10,subnet-0b95df318219145ca,subnet-0ccca36474902829a"
+    # Recommended: Tell AWS ALB which path to use for its own health check
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
 spec:
   ingressClassName: alb
   rules:
-   - host: ace12.online
+    - host: ace12.online
       http:
         paths:
+          # 1. Main API Route
           - path: /api
             pathType: Prefix
             backend:
@@ -21,6 +23,8 @@ spec:
                 name: api
                 port:
                   number: 3500
+          
+          # 2. Probe Routes (Health/Ready/Started)
           - path: /healthz
             pathType: Exact
             backend:
@@ -42,6 +46,8 @@ spec:
                 name: api
                 port:
                   number: 3500
+          
+          # 3. Frontend Route (Must be last if using Prefix /)
           - path: /
             pathType: Prefix
             backend:
@@ -49,4 +55,3 @@ spec:
                 name: frontend
                 port:
                   number: 3000
-
