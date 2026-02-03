@@ -74,3 +74,32 @@ sudo apt install trivy -y
 # Intalling Helm
 #! /bin/bash
 sudo snap install helm --classic
+
+
+# to increase the volume size of Jenkins server if required
+Step 1: Expand the Volume in AWS
+You must do this in the AWS Console first.
+Go to the AWS Management Console > EC2 > Volumes.
+Select the volume attached to your instance (it will say "In-use" and size "8 GiB").
+Click Actions > Modify Volume.
+Change the size from 8 to 20.
+Click Modify. (Wait 10-20 seconds for the state to turn green/optimizing).
+
+Step 2: Extend the Partition in Linux
+Once AWS says "Modifying" or "In-use" (at the new size), run these 3 commands inside your terminal:
+1. Check the device name and confirm new size You should see xvda or nvme0n1 showing "20G", but the "part" (partition) inside it is still "8G".
+
+Bash
+lsblk
+2. Grow the partition Note: Based on your previous logs, your disk is likely /dev/xvda and partition 1.
+
+Bash
+# Syntax: sudo growpart [DISK] [PARTITION_NUMBER]
+sudo growpart /dev/xvda 1
+(If you see NOCHANGE, run lsblk again to ensure AWS actually updated the size first).
+
+3. Resize the Filesystem This forces the OS to use the new space.
+
+Bash
+sudo resize2fs /dev/xvda1
+Final Check: Run df -h

@@ -19,7 +19,8 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/Ace12Anirudh/three-tier-mernapp-deploy.git'
+        // Added 'branch: 'main'' to fix the revision error
+                git branch: 'main', credentialsId: 'GITHUB', url: 'https://github.com/Ace12Anirudh/three-tier-mernapp-deploy.git'
             }
         }
         stage('Sonarqube Analysis') {
