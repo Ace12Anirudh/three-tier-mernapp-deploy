@@ -7,6 +7,7 @@ spec:
   ports:
   - port: 3000
     protocol: TCP
-  type: ClusterIP
+    nodePort: 30007
+  type: NodePort
   selector:
     role: frontend
