@@ -6,16 +6,17 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+    # Listens on Port 80
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    # Recommended: Tell AWS ALB which path to use for its own health check
-    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    # Success Codes: Explicitly accept 200-399 (covers redirects/static files)
+    alb.ingress.kubernetes.io/success-codes: '200-399'
 spec:
   ingressClassName: alb
   rules:
     - host: ace12.online
       http:
         paths:
-          # 1. Main API Route
+          # 1. API - Goes to Backend
           - path: /api
             pathType: Prefix
             backend:
@@ -24,30 +25,7 @@ spec:
                 port:
                   number: 3500
           
-          # 2. Probe Routes (Health/Ready/Started)
-          - path: /healthz
-            pathType: Exact
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          - path: /ready
-            pathType: Exact
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          - path: /started
-            pathType: Exact
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          
-          # 3. Frontend Route (Must be last if using Prefix /)
+          # 2. Frontend - Goes to React/HTML (Must be last)
           - path: /
             pathType: Prefix
             backend:
