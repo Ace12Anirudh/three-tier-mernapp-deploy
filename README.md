@@ -17,7 +17,6 @@ This project simulates a real-world enterprise environment where resources are r
 4.  **Networking:** Due to SCP (Service Control Policy) restrictions on the AWS account, an **Application Load Balancer (ALB)** is manually configured to route traffic to **NodePort** services on Private Nodes.
 
 ![Architecture Diagram](./assets/three-tier.png)
-> *[Replace with your actual architecture diagram]*
 
 ---
 
