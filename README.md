@@ -132,13 +132,3 @@ cd three-tier-mernapp-deploy
 * [ ] Integrate **Prometheus & Grafana** for monitoring.
 * [ ] Automate the ALB creation using **Terraform** (bypassing the Controller issue).
 * [ ] Implement **Network Policies** for tighter security between pods.
-
----
-
-## 🤝 Contributors
-* **Aman Pathak** - *DevOps Engineer* - [GitHub Profile](https://github.com/Ace12Anirudh)
-
----
-
-### 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
